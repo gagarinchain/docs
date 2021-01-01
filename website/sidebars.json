@@ -1,10 +1,11 @@
 {
   "docs": {
-    "Docusaurus": ["doc1"],
-    "First Category": ["doc2"],
-    "Second Category": ["doc3"]
+    "Docs": [
+      "overview", "consensus", "blockchain", "encryption", "networking", "oracles", "plugins", "startup",
+      "transactions", "rollups", "gateway", "explorer", "future"
+    ]
   },
   "docs-other": {
-    "First Category": ["doc4", "doc5"]
+    "First Category": ["api", "doc5"]
   }
 }
