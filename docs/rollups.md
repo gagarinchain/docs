@@ -1,7 +1,7 @@
 ---
 id: rollups
 title: Hotstuff Rollups
-sidebar_label: Hotstuff Rollups
+sidebar_label: Rollups
 ---
 
 Rollups is a concept popularized by Vitalik Buterin and suggested as main scaling methodology for Ethereum till second version of network will be delivered. Main idea behind rollups lies in posting compressed transaction execution data to main chain. 
