@@ -73,7 +73,7 @@ replica also increments viewNumber and starts the next view.
 # Chained Hotstuff
 It takes three phases for a Basic HotStuff leader to commit a proposal. These phases are not doing “useful” work
 except collecting votes from replicas, and they are all very similar. In Chained HotStuff, we improve the Basic
-HotStuff protocol utility while at the same time considerably simplifying it. The idea is to change the view on every
+HotStuff protocol utility while at the same time considerably simplifying it. The idea is to change the view in every
 prepare phase, so each proposal has its own view. This reduces the number of message types and allows for pipelining
 of decisions. A similar approach for message type reduction was suggested in Casper.
 
@@ -120,16 +120,15 @@ Finally, if b∗ forms a Three-Chain, the commit phase of b has succeeded, and b
 
 
 #Pacer
-A Pacer is a mechanism that guarantees progress after GST.
+Pacer is a mechanism that guarantees progress after GST.
 
-At first pacer makes progress happen every view, bringing all correct replicas, and a unique leader, into a common height for a
-sufficiently long period. For this purpose ∆ max time is spent at every height waiting for appropriate action is being made. 
-After progress is being made or ∆ max time is out network changes view and chooses next proposer (leader). We use round-robin for proposer to switch. All correct replicas keep a predefined committee list and rotate
-to the next one when the leader is demoted. For advanced setups it is possible to use VDF (Verifiable Delay Functions) or every other decentralized source of randomness to switch proposers in stochastic way.
+At first, pacer makes progress happen every view, bringing all correct replicas, and a unique leader, into a common height for a
+sufficiently long period. For this purpose ∆ max time is spent at every height waiting for appropriate action to be made. 
+After progress has been made or ∆ max time is out the network changes view and chooses next proposer (leader). We use round-robin for proposer to switch. All correct replicas store a predefined committee list and rotate to the next one when the leader is demoted. For advanced setups it is possible to use VDF (Verifiable Delay Functions) or every other decentralized source of randomness to switch proposers in stochastic way.
 
-Synchronization is achieved through epoch starting mechanism. Epoch is a consecutive committee.size of views. Starting at first view and every committee.size views we have start epoch event, which is message exchange with current known epoch number and HQC between replicas. 
-The main point is to receive (n - f) messages about current epoch number and enter first view on current epoch to start making progress if optimistic responsiveness is achieved or waiting ∆ seconds. It gives protocol a timeline which is revisited every epoch.
-This mechanism helps replicas to recover after large network crashes and decide what epoch they were working on last time progress been achieved.
+Synchronization is achieved through epoch starting mechanism. Epoch is a consecutive committee.size of views. Starting at first view and every committee.size view the network starts an epoch via message exchange between replicas sending current known epoch number and HQC. 
+The main point is to receive (n - f) messages about the current epoch number and enter first view on current epoch to start making progress if optimistic responsiveness is achieved or waiting ∆ seconds. It gives protocol a timeline which is revisited every epoch.
+This mechanism helps replicas to recover after large network crashes and decide which epoch they were working on last time progress has been achieved.
 
 # Messages
 ### Epoch start
