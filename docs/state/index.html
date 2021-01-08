@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Sate · Gagarin.network</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## State model"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Sate · Gagarin.network"/><meta property="og:type" content="website"/><meta property="og:url" content="https://gagarinchain.github.io/docs/"/><meta property="og:description" content="## State model"/><meta property="og:image" content="https://gagarinchain.github.io/docs/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://gagarinchain.github.io/docs/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/docs/img/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/docs/js/scrollSpy.js"></script><link rel="stylesheet" href="/docs/css/main.css"/><script src="/docs/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/docs/"><img class="logo" src="/docs/img/favicon.ico" alt="Gagarin.network"/><h2 class="headerTitleWithLogo">Gagarin.network</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/docs/overview" target="_self">Docs</a></li><li class=""><a href="/docs/docs/api" target="_self">API</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Docs</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Docs</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/docs/overview">Overview</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/consensus">Hotstuff</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/blockchain">Blockchain</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/encryption">This is encryption</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/networking">This is networking</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/oracles">This is oracles</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/plugins">This is plugins</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/startup">This is startup</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/transactions">Transactions</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/rollups">Rollups</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/docs/state">Sate</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/gateway">Gateway</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/explorer">This is explorer</a></li><li class="navListItem"><a class="navItem" href="/docs/docs/future">This is future</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Sate</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="state-model"></a><a href="#state-model" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>State model</h2>
+<p>Gagarin.network uses an account-based data model to encode the ledger state. The state is structured as a key-value store, which maps account address keys to account values.
+An account value in the ledger state is wallet balance and possibly amount of assets kept. The initial set of accounts and their state are specified in the
+genesis ledger state.</p>
+<h2><a class="anchor" aria-hidden="true" id="account-addresses"></a><a href="#account-addresses" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Account addresses</h2>
+<p>An account address is a 160-bit value exactly the same as Ethereum addresses are. To create a new account, a user
+first generates (more details in key section) a fresh verification/signature key-pair (pk, sk) for chosen signature scheme and uses last 20 bytes of the
+cryptographic hash keccak256 of the public key as an account address. The new
+account is created in the ledger typically when a transaction attempts to send funds to an account at address that has not yet been created.</p>
+<h2><a class="anchor" aria-hidden="true" id="storage"></a><a href="#storage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Storage</h2>
+<p>We use levelDB to persist state, blockchain and network specific data.
+LevelDB is a fast key-value storage library written by google fellows Sanjay Ghemawat and Jeff Dean that provides an ordered mapping from string keys to string values.
+Despite of levelDB's it is pretty good for local data persistent, main limitations are as follow:</p>
+<ul>
+<li>This is not a SQL database. It does not have a relational data model, it does not support SQL queries, and it has no support for indexes.</li>
+<li>Only a single process (possibly multi-threaded) can access a particular database at a time.</li>
+<li>There is no client-server support builtin to the library. An application that needs such support will have to wrap their own server around the library.</li>
+</ul>
+<p>Data stored in storage is not usable for BI and heavy data analytics, you should use monitoring buss for data streaming instead or load levelDB files manually offline.</p>
+<p>LevelDB do not support RDBMS-like table objects, instead we divide data by key prefixes, here the list</p>
+<pre><code class="hljs css language-golang"><span class="hljs-keyword">type</span> ResourceType <span class="hljs-keyword">byte</span>
+
+<span class="hljs-keyword">const</span> Block = ResourceType(<span class="hljs-number">0x0</span>)
+<span class="hljs-keyword">const</span> HeightIndex = ResourceType(<span class="hljs-number">0x1</span>)
+<span class="hljs-keyword">const</span> CurrentEpoch = ResourceType(<span class="hljs-number">0x2</span>)
+<span class="hljs-keyword">const</span> CurrentView = ResourceType(<span class="hljs-number">0x3</span>)
+<span class="hljs-keyword">const</span> TopCommittedHeight = ResourceType(<span class="hljs-number">0x4</span>)
+<span class="hljs-keyword">const</span> CurrentTopHeight = ResourceType(<span class="hljs-number">0x5</span>)
+<span class="hljs-keyword">const</span> Snapshot = ResourceType(<span class="hljs-number">0x6</span>)
+<span class="hljs-keyword">const</span> Record = ResourceType(<span class="hljs-number">0x7</span>)
+<span class="hljs-keyword">const</span> VHeight = ResourceType(<span class="hljs-number">0x8</span>)
+<span class="hljs-keyword">const</span> LastExecutedBlock = ResourceType(<span class="hljs-number">0x9</span>)
+<span class="hljs-keyword">const</span> HQC = ResourceType(<span class="hljs-number">0xa</span>)
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="merkle-tree"></a><a href="#merkle-tree" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Merkle tree</h2>
+<p>A Sparse Merkle tree is a binary tree that incorporates the use of cryptographic hash
+functions. One or many attributes are inserted into the leaves, and every node
+derives a digest which is recursively dependent on all attributes in its subtree.
+That is, leaves compute the hash of their own attributes, and parents derive the
+hash of their children’s digests concatenated left-to-right.
+SMT contains a distinct leaf for every possible output from a cryptographic hash function, and can
+be simulated efficiently because the tree is sparse (i.e., most leaves are
+empty).</p>
+<p><img src="/docs/docs/assets/smt.png" alt="alt-text"></p>
+<p>We use SMT for state representation of blockchain. We use address of account as tree key to calculate leaf to store address value hash in. As account address is 20 byte length, SMT is 21 level high with 2^20 leafs possible in theory. With SMT it is possible to get cryptographic proof of fact that current account has given value, or do not have any value at all. Proof is 20 hashes, starting from hashed value and consequence union of hashes of parent nodes in the tree. Hash of tree node is a hash of concatenation of values of its left and right children.</p>
+<h3><a class="anchor" aria-hidden="true" id="proof-use-in-light-clients"></a><a href="#proof-use-in-light-clients" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Proof use in light clients</h3>
+<p>Proofs are the key elements for light clients. The idea behind proof use is that light client can simply load BlockHeaders without block bodies and build light blockchain representations. Let Alice want to prove that she has sufficient funds or assets on her account and let Bob try to verify it running the light client. To prove that Alice can provide proof calculated for her account in this block. Bob can compare the head of the proof with <code>statehash</code> field from block header and if they are equal he can be confident that Alice tells the truth.</p>
+<h2><a class="anchor" aria-hidden="true" id="snapshot"></a><a href="#snapshot" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Snapshot</h2>
+<p>Since every new block can initiate blockchain forking, state should be forked too. The naive way of forking state is copying it every time new block arrives and apply transactions to this state copy.
+It can possibly work for systems with small amount of accounts, but in more complex and heavy loaded systems these copies will waste a lot of resources.</p>
+<p>More advanced technique is to store only fragments of Merkle tree that was updated during block executing.
+For that purpose we use special structure called Snapshot.</p>
+<ol>
+<li>For every new block an empty snapshot linked to parent's snapshot is created.</li>
+<li>When account's (which is actually a leave of SMT) balance is updated, every parent tree node hash must be updated in case.</li>
+<li>When block is committed all snapshots are merged on the path through last committed block sequentially.
+In 3 we use nice Hotstuff ability to guarantee fast commit every epoch. In absence of forking committed block will always has actual state tree and if we do not need state change history we simply merge all previous snapshots preemptively .</li>
+</ol>
+<p>To get actual SMT proof for account in current block, we have to lookup all nodes from leaf to head in current snapshot, if not found lookup its parent's snapshot and so on upto committed snapshot.</p>
+<blockquote>
+<p>we will draw diagram soon</p>
+</blockquote>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/docs/rollups"><span class="arrow-prev">← </span><span>Rollups</span></a><a class="docs-next button" href="/docs/docs/gateway"><span>Gateway</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#state-model">State model</a></li><li><a href="#account-addresses">Account addresses</a></li><li><a href="#storage">Storage</a></li><li><a href="#merkle-tree">Merkle tree</a><ul class="toc-headings"><li><a href="#proof-use-in-light-clients">Proof use in light clients</a></li></ul></li><li><a href="#snapshot">Snapshot</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/docs/" class="nav-home"><img src="/docs/img/favicon.ico" alt="Gagarin.network" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/docs/overview.html">Getting Started (or other categories)</a><a href="/docs/docs/api.html">API Reference (or other categories)</a></div><div><h5>Community</h5><a href="/docs/users">User Showcase</a><a href="https://stackoverflow.com/questions/tagged/" target="_blank" rel="noreferrer noopener">Stack Overflow</a><a href="https://discordapp.com/">Project Chat</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="/docs/blog">Blog</a><a href="https://github.com/">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/docs/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2021 Your Name or Your Company Name</section></footer></div></body></html>
