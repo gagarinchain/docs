@@ -4,7 +4,7 @@ title: Blockchain
 sidebar_label: Blockchain
 ---
 
-The Gagarin.network blockchain is in many ways similar to the blockchains in popular open networks such as Ethereum and Bitcoin. Blockchain is a sequence of blocks starting from special genesis block, every block has link to parent block and genesis block is reachable from every block through its parent recursively. Moreover every block has height such as height of parent block is less than children's height by one, so no gaps in height is allowed in blockchain. 
+Gagarin.network blockchain is in many ways similar to the blockchains in popular open networks such as Ethereum and Bitcoin. Blockchain is a sequence of blocks starting from special genesis block, every block has link to parent block and genesis block is reachable from every block through its parent recursively. Moreover every block has height such as height of parent block is less than children's height by one, so no gaps in height is allowed in blockchain. 
 
 ```proto
 message BlockS {
@@ -28,20 +28,20 @@ message BlockHeaderS {
 }
 ```
 
-Although blockchain in Gagarin.network does have some differences. 
+Although the blockchain in Gagarin.network does have some differences. 
 
-At first, our blockchain has additional link to predecessor block, this link is formed via Quorum Certificate included in every block and is used for fast commits in blockchain. How QCs are formed and used during commit phase look in Hotstuff docs. 
+First, our blockchain has additional link to predecessor block. This link is formed via Quorum Certificate included in every block and is used for fast commits in the blockchain. How QCs are formed and used during commit phase is described in Hotstuff docs. 
 
-Second, our blockchain do not have reach forking, Gagarin.network tree looks more like a palm, with long committed trunk and reach crown on top of committed height. Hotstuff guarantees that there will be at least one new committed block every epoch and all concurrent forks can successfully be omitted. 
+Second, our blockchain does not have rich forking, Gagarin.network tree looks more like a palm, with long committed trunk and rich crown on top of committed height. Hotstuff guarantees that there will be at least one new committed block every epoch and all concurrent forks can successfully be omitted. 
 
 Third, when block is committed we use aggregated signature, formed during voting for proposal with this block as cryptographic proof of block validity. With this proof we can get rid of all transaction signatures in this block, making block size less and further processing of this block faster.      
 
 ## Block validation 
->We will fill this section soon
+>We will fill in this section soon
 
 
 ## Synchronization algorithm
-When node starts or it receivs unknown block it must synchronize local blockchain and download missing blocks.
+When node starts or it receives unknown block it must synchronize local blockchain and download missing blocks.
 Further algorithm will describe this process in details:
 
 1. Discover current blockchain height and optionally top blockchain height from the network (via hello message)

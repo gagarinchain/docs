@@ -6,11 +6,11 @@ sidebar_label: Sate
 
 ## State model
 Gagarin.network uses an account-based data model to encode the ledger state. The state is structured as a key-value store, which maps account address keys to account values. 
-An account value in the ledger state is wallet balance and possibly amount of assets kept. The initial set of accounts and their state are specified in the
+An account value in the ledger state is wallet balance and other financial data. The initial set of accounts and their state are specified in the
 genesis ledger state.
 
 ## Account addresses 
-An account address is a 160-bit value exactly the same as Ethereum addresses are. To create a new account, a user
+An account address is 160-bit value exactly the same as Ethereum addresses are. To create a new account, a user
 first generates (more details in key section) a fresh verification/signature key-pair (pk, sk) for chosen signature scheme and uses last 20 bytes of the
 cryptographic hash keccak256 of the public key as an account address. The new
 account is created in the ledger typically when a transaction attempts to send funds to an account at address that has not yet been created.
@@ -21,11 +21,11 @@ LevelDB is a fast key-value storage library written by google fellows Sanjay Ghe
 Despite of levelDB's it is pretty good for local data persistent, main limitations are as follow:
 - This is not a SQL database. It does not have a relational data model, it does not support SQL queries, and it has no support for indexes.
 - Only a single process (possibly multi-threaded) can access a particular database at a time.
-- There is no client-server support builtin to the library. An application that needs such support will have to wrap their own server around the library.
+- There is no client-server support built in to the library. An application that needs such support will have to wrap its own server around the library.
 
 Data stored in storage is not usable for BI and heavy data analytics, you should use monitoring buss for data streaming instead or load levelDB files manually offline. 
 
-LevelDB do not support RDBMS-like table objects, instead we divide data by key prefixes, here the list
+LevelDB do not support RDBMS-like table objects, instead we divide data by key prefixes, here is the list
 ```golang
 type ResourceType byte
 
@@ -70,7 +70,7 @@ For that purpose we use special structure called Snapshot.
 1. For every new block an empty snapshot linked to parent's snapshot is created. 
 2. When account's (which is actually a leave of SMT) balance is updated, every parent tree node hash must be updated in case.
 3. When block is committed all snapshots are merged on the path through last committed block sequentially. 
-In 3 we use nice Hotstuff ability to guarantee fast commit every epoch. In absence of forking committed block will always has actual state tree and if we do not need state change history we simply merge all previous snapshots preemptively .  
+In p.3 we use nice Hotstuff ability to guarantee fast commit every epoch. In absence of forking committed block will always has actual state tree and if we do not need state change history we simply merge all previous snapshots preemptively .  
 
 To get actual SMT proof for account in current block, we have to lookup all nodes from leaf to head in current snapshot, if not found lookup its parent's snapshot and so on upto committed snapshot.
 
