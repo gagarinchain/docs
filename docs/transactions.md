@@ -50,10 +50,10 @@ Every transaction type defines unique action with state. Lets look closely what 
 Default signature scheme for transactions is Boneh-Lynn-Shacham (BLS) crypto signatures on BLS12-381 curve. 
 BLS signatures use parings and give us a lot of amazing features, such as identity schemes, ZK-proofs and so on. 
 But they are pretty computational heavy and for some use cases can be too slow and expensive. For such use cases we provide Edwards-curve Digital Signature Algorithm (EdDSA) on Ed25519 curve.
-This transactions are much faster and are suitable for transaction heavy loaded networks.
+These transactions are much faster and are suitable for transaction heavy loaded networks.
 
 ## Nonce
-Since Gagarin.network doesn't use UTXO model like Bitcoin does it needs transaction ordering and account versioning. It is achieved with adding nonce field to transactions, the same way Ethereum does it. 
+Since Gagarin.network doesn't use UTXO model like Bitcoin does it needs transaction ordering and account versioning. It is achieved by adding nonce field to transactions, the same way Ethereum does it. 
 Nonce is an incremental integer which starts at 1 and increments without gaps. If transactions have equal nonces they are sorted by fee and transaction with higher fee is executed while others are rejected. It is common way to cancel mistaken transaction while it is still in tx_pool.
 
 ## Validation rules
@@ -64,8 +64,8 @@ Transaction pool is an inmemory structure that stores all new coming valid trans
 
 
 ## Transaction execution
-Transactions to apply always come with new block for current blockchain fork. For every new block ```applyTransaction``` creates new empty snapshot which is linked to parent snapshot and inherits it's state.  Every change transactions do in the state is stored in this snapshot.
-If transaction is not applicable, the error occurs and snapshot becoming rejected. The result of transaction execution is receipt with execution log.  
+Transactions to apply always come with new block for current blockchain fork. For every new block ```applyTransaction``` creates new empty snapshot which is linked to parent snapshot and inherits its state.  Every change transactions do in the state is stored in this snapshot.
+If transaction is not applicable, the error occurs and snapshot becomes rejected. The result of transaction execution is receipt with execution log.  
 Transaction is applicable when and only when it's 
 - tx.nonce >= state.nonce + 1
 - tx.from.balance >= tx.balance + tx.fee
