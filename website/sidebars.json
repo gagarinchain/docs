@@ -2,10 +2,10 @@
   "docs": {
     "Docs": [
       "overview", "consensus", "blockchain", "encryption", "networking", "oracles", "plugins", "startup",
-      "transactions", "rollups", "gateway", "explorer", "future"
+      "transactions", "rollups", "state", "gateway", "explorer", "future"
     ]
   },
   "docs-other": {
-    "First Category": ["api", "doc5"]
+    "First Category": ["api", "api"]
   }
 }

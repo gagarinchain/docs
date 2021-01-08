@@ -11,7 +11,8 @@ We use rollups to replicate state from the side chain to the main chain which is
 - Using Ethereum to communicate between side-chains
 
 ## How it works
-<<graph>>
+> We will draw diagram soon 
+
 ### Gagarin.network
 Rollup plugin is used to add rollup logic to gagarin.network. Plugin implements three interfaces OnBlockCommit, OnReceiveProposal, OnNewBlockCreated.
 

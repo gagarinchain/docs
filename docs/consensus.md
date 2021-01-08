@@ -5,7 +5,9 @@ sidebar_label: Hotstuff
 
 ---
 
-# Basic Hotstuff
+> we will be greatful here
+
+## Basic Hotstuff
 HotStuff solves the State Machine Replication (SMR) problem. At the core of SMR is a protocol for deciding on a
 growing log of blocks requests by clients. A group of state-machine replicas apply blocks in sequence order
 consistently. A client sends a block proposal request to all replicas, and waits for responses from (f + 1) of them. 
@@ -22,7 +24,7 @@ certificate (or “QC” in short). The QC is associated with a particular block
 employs a threshold signature scheme to generate a representation of (n−f) signed votes as a single authenticator.
 Below we give an operational description of the protocol logic by phases.
 
-# Phases
+## Phases
 ### Prepare phase 
 The protocol for a new leader starts by collecting new-view messages from (n − f) replicas.
 The new-view message is sent by a replica as it transitions into viewNumber (including the first view) and carries
@@ -47,30 +49,30 @@ a proposal is the branch of m.block extends from the currently locked block lock
 liveness rule is the replica will accept m if m.justify has a higher view than the current lockedQC. The predicate is
 true as long as either one of two rules holds.
 
-### Pre-commit phase. 
+### Pre-commit phase 
 When the leader receives (n − f) prepare votes for the current proposal curProposal, it
 combines them into a prepareQC. The leader broadcasts prepareQC in pre-commit messages. A replica responds
 to the leader with pre-commit vote having a signed digest of the proposal.
 
-### Commit phase. 
+### Commit phase 
 The commit phase is similar to pre-commit phase. When the leader receives (n−f) pre-commit
 votes, it combines them into a precommitQC and broadcasts it in commit messages; replicas respond to it with a
 commit vote. Importantly, a replica becomes locked on the precommitQC at this point by setting its lockedQC
 to precommitQC. This is crucial to guard the safety of the proposal in case it becomes a
 consensus decision.
 
-### Decide phase. 
+### Decide phase 
 When the leader receives (n − f) commit votes, it combines them into a commitQC . Once
 the leader has assembled a commitQC , it sends it in a decide message to all other replicas. Upon receiving a
 decide message, a replica considers the proposal embodied in the commitQC a committed decision, and executes
 the commands in the committed branch. The replica increments viewNumber and starts the next view.
 
-### NextView interrupt. 
+### NextView interrupt 
 In all phases, a replica waits for a message at view viewNumber for a timeout period,
 determined by an auxiliary nextView(viewNumber ) utility. If nextView(viewNumber ) interrupts waiting, the
 replica also increments viewNumber and starts the next view.
 
-# Chained Hotstuff
+## Chained Hotstuff
 It takes three phases for a Basic HotStuff leader to commit a proposal. These phases are not doing “useful” work
 except collecting votes from replicas, and they are all very similar. In Chained HotStuff, we improve the Basic
 HotStuff protocol utility while at the same time considerably simplifying it. The idea is to change the view in every
@@ -99,13 +101,13 @@ generic message. The generic QC functions in all logically pipelined phases. We 
 in the pipeline to take care of locking and committing, which occur only in the commit and decide phases of Basic
 HotStuff.
 
-### Empty blocks. 
+### Empty blocks 
 The genericQC used by a leader in some view viewNumber may not directly reference the proposal of the preceding view (viewNumber −1). The reason is that the leader of a preceding view fails to obtain a QC, either because there are conflicting proposals, or due to a benign crash. To simplify the tree structure, createLeaf
 extends genericQC.block with empty blocks up to the height (the number of parent links on a boock’s branch) of the
 proposing view, so view-numbers are equated with block heights. As a result, the QC embedded in a block b may not
 refer to its parent, i.e., b.justify.block may not equal b.parent (the last block in chained.png).
 
-### One-Chain, Two-Chain, and Three-Chain. 
+### One-Chain, Two-Chain, and Three-Chain 
 ![alt-text](assets/threechain.png)
 
 When a block b∗ carries a QC that refers to a direct parent, i.e., b∗.justify.block = b∗.parent, we say that it forms a One-Chain. Denote by b" = b∗.justify.block. Block b∗ forms a Two-Chain, if in addition to forming a One-Chain, b".justify.block = b".parent. It forms a Three-Chain, if b" forms a Two-Chain.
@@ -119,7 +121,7 @@ If b∗ forms a Two-Chain, then the pre-commit phase of b' has succeeded. The re
 Finally, if b∗ forms a Three-Chain, the commit phase of b has succeeded, and b becomes a committed decision.
 
 
-#Pacer
+## Pacer
 Pacer is a mechanism that guarantees progress after GST.
 
 At first, pacer makes progress happen every view, bringing all correct replicas, and a unique leader, into a common height for a
@@ -130,7 +132,7 @@ Synchronization is achieved through epoch starting mechanism. Epoch is a consecu
 The main point is to receive (n - f) messages about the current epoch number and enter first view on current epoch to start making progress if optimistic responsiveness is achieved or waiting ∆ seconds. It gives protocol a timeline which is revisited every epoch.
 This mechanism helps replicas to recover after large network crashes and decide which epoch they were working on last time progress has been achieved.
 
-# Messages
+## Messages
 ### Epoch start
 ```proto
 message EpochStartPayload {
