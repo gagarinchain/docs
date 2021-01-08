@@ -64,7 +64,7 @@ Transaction pool is an inmemory structure that stores all new coming valid trans
 
 
 ## Transaction execution
-Transactions to apply always come with new block for current blockchain fork. For every new block ```applyTransaction``` creates new empty snapshot which is linked to parent snapshot and inherits its state.  Every change transactions do in the state is stored in this snapshot.
+Transactions to apply always come with new block for current blockchain fork. For every new block ```applyTransaction``` creates new empty snapshot which is linked to parent snapshot and inherits its state.  Every change transactions make in the state is stored in this snapshot.
 If transaction is not applicable, the error occurs and snapshot becomes rejected. The result of transaction execution is receipt with execution log.  
 Transaction is applicable when and only when it's 
 - tx.nonce >= state.nonce + 1
