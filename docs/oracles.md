@@ -18,4 +18,4 @@ Alice want to increase her deposit and transfer her assets from her bank account
 5. When the transactions are committed WatcherPlugin collects proofs, and when he gets n - f proofs, he sends ```Proof``` transaction with aggregated signature of ```Settlement``` hash. This transaction contains cryptographic proof that n-f replicas confirmed ```Settlement``` validity. ```Proof``` transaction always sent to ```Settlement``` address. *We must admit, that Plugins are run on each replica and are not separate network entities, they are drawn this way for clarity*
 6. When ```Proof``` transaction is included in block and committed, Alice's balance increases.
 
-The address of ```Settlement``` is calculated in the further way ```common.BytesToAddress(settlement.Hash().Bytes()[12:]).Bytes())```
+The address of ```Settlement``` is calculated in the following way ```common.BytesToAddress(settlement.Hash().Bytes()[12:]).Bytes())```
