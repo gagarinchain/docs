@@ -1,9 +1,10 @@
 {
   "docs": {
-    "Docs": [
-      "overview", "consensus", "blockchain", "encryption", "networking", "oracles", "plugins", "startup",
-      "transactions", "rollups", "state", "gateway", "explorer", "future"
-    ]
+    "Overview": ["overview"],
+    "Architecture": ["consensus", "blockchain", "encryption", "networking", "oracles", "plugins", "startup",
+      "transactions", "rollups", "state", "gateway", "monitoring"],
+    "Tutorial": ["tutorial"],
+    "What's next": ["future"]
   },
   "docs-other": {
     "First Category": ["api", "api"]

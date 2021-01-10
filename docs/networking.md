@@ -27,6 +27,8 @@ Libp2p uses public key cryptography as the basis of peer identity, which serves 
 
 Every peer in Gagarin.network has its own identity. ECDSA keypair is generated on Secp256k1 curve to identify each peeer and use in secio transport 
 
+### Permissions
+>we will write about permission service soon
 
 ## Peer Routing
 When you want to send a message to another peer, you need two key pieces of information: their PeerId, and a way to locate them on the network to open a connection.

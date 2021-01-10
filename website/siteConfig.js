@@ -24,7 +24,9 @@ const siteConfig = {
   title: 'Gagarin.network', // Title for your website.
   tagline: 'Documents, guides and API reference',
   url: 'https://gagarinchain.github.io', // Your website URL
-  baseUrl: '/docs/', // Base URL for your project */
+  baseUrl: '/', // Base URL for your project */
+  cname: 'docs.gagarin.network',
+
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',
