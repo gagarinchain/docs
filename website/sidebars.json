@@ -1,7 +1,7 @@
 {
   "docs": {
     "Overview": ["overview"],
-    "Architecture": ["consensus", "blockchain", "encryption", "networking", "oracles", "plugins", "startup",
+    "Architecture": ["architecture","consensus", "blockchain", "encryption", "networking", "oracles", "plugins", "startup",
       "transactions", "rollups", "state", "gateway", "monitoring"],
     "Tutorial": ["tutorial"],
     "What's next": ["future"]

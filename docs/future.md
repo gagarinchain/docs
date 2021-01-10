@@ -3,4 +3,4 @@ id: future
 title: This is future
 ---
 
-subj
+>wi will soon tell about our future developments
