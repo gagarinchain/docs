@@ -93,11 +93,15 @@ class Index extends React.Component {
             image: `${baseUrl}img/undraw_react.svg`,
             imageAlign: 'top',
             title: 'Docs',
+            imageLink: siteConfig.docsUrl + '/overview'
           },
           {
             image: `${baseUrl}img/undraw_operating_system.svg`,
             imageAlign: 'top',
             title: 'API',
+            link: '/api',
+            imageLink: siteConfig.docsUrl + '/api'
+
           },
         ]}
       </Block>

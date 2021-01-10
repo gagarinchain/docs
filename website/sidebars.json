@@ -2,11 +2,11 @@
   "docs": {
     "Overview": ["overview"],
     "Architecture": ["architecture","consensus", "blockchain", "encryption", "networking", "oracles", "plugins", "startup",
-      "transactions", "rollups", "state", "gateway", "monitoring"],
+      "transactions", "rollups", "state", "gateway", "monitoring", "utils"],
     "Tutorial": ["tutorial"],
     "What's next": ["future"]
   },
-  "docs-other": {
-    "First Category": ["api", "api"]
+  "api": {
+    "API": ["api", "buss"]
   }
 }

@@ -1,8 +1,7 @@
- ---
+---
 id: oracles
 title: Oracles
 sidebar_label: Oracles
-
 ---
 
 Blockchains can't query data from external world and by design are closed systems. In order to allow blockchains tocommunicate with others oracles are introduced.
