@@ -4,11 +4,11 @@ sidebar_label: Network
 title: Network layer
 ---
 
-Networking us a huge part of decentralized network. Alongside with consensus protocol network framework is one of core elements and it fully defines blockchain's functionality and especially its limitations.
-It is enormously hard task to create good network framework from scratch, moreover there are not much open source protocols to choose from. But luckily there is one that costs hundreds and it is Libp2p (https://libp2p.io/).
+Networking is a huge part of decentralized network. Together with consensus protocol, network framework is one of core elements which fully defines blockchain's functionality and especially its limitations.
+It is an enormously hard task to create good network framework from scratch, moreover there are not many open source protocols to choose from. But luckily there is one that costs hundreds and it is Libp2p (https://libp2p.io/).
 
-Libp2p is a modular system of protocols, specifications and libraries that enable the development of peer-to-peer network applications.
-A peer-to-peer network is one in which the participants (referred to as peers or nodes) communicate with one another directly, on more or less “equal footing”. This does not necessarily mean that all peers are identical; some may have different roles in the overall network. However, one of the defining characteristics of a peer-to-peer network is that they do not require a priviliged set of “servers” which behave completely differently from their “clients”, as is the case in the the predominant client / server model.
+Libp2p is a modular system of protocols, specifications and libraries that enables the development of peer-to-peer network applications.
+A peer-to-peer network is one where the participants (referred to as peers or nodes) communicate with one another directly, on more or less “equal footing”. This does not necessarily mean that all peers are identical; some may have different roles in the overall network. However, one of the defining characteristics of a peer-to-peer network is that they do not require a priviliged set of “servers” which behave completely differently from their “clients”, as is the case in the predominant client / server model.
 
 
 ## Transport
@@ -35,12 +35,12 @@ When you want to send a message to another peer, you need two key pieces of info
 
 There are many cases where we only have the PeerId for the peer we want to contact, and we need a way to discover their network address. Peer routing is the process of discovering peer addresses by leveraging the knowledge of other peers.
 
-In a peer routing system, a peer can either give us the address we need if they have it, or else send our inquiry to another peer who’s more likely to have the answer. As we contact more and more peers, we not only increase our chances of finding the peer we’re looking for, libp2p build a more complete view of the network in our own routing tables, which enables us to answer routing queries from others.
-Libp2p uses a distributed hash table to iteratively route requests closer to the desired PeerId using the Kademlia routing algorithm.
+In a peer routing system, a peer can either give us the address we need if they have it, or else send our inquiry to another peer who’s more likely to have the answer. As we contact more and more peers, we not only increase our chances of finding the peer we’re looking for, libp2p builds a more complete view of the network in our own routing tables, which enables us to answer routing queries from others.
+Libp2p uses a distributed hash table to iteratively route requests closer to the desired PeerId using the Kademlia routing algorythm.
 
 In Gagarin.network peers do not necessarily take part in consensus, they can only provide networking services, such as peer discovery or transport relay. More about peer configuration see in configuration service.
 
 ## Messaging / PubSub
-Sending messages sending a message to groups of interested receivers is at the heart of most Gagarin.network, and pubsub protocol of libp2p (short for publish / subscribe) is a very useful pattern for it.
+Sending messages to groups of interested receivers is at the heart of most Gagarin.network, and pubsub protocol of libp2p (short for publish / subscribe) is a very useful pattern for it.
 
 Libp2p defines a pubsub interface for sending messages to all peers subscribed to a given “topic”. In Gagagrin.network we use gossipsub broadcast protocol, for reliable broadcasting of Hotstuff vote messages.
