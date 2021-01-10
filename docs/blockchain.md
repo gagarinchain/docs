@@ -4,7 +4,7 @@ title: Blockchain
 sidebar_label: Blockchain
 ---
 
-Gagarin.network blockchain is in many ways similar to the blockchains in popular open networks such as Ethereum and Bitcoin. Blockchain is a sequence of blocks starting from special genesis block, every block has link to parent block and genesis block is reachable from every block through its parent recursively. Moreover every block has height such as height of parent block is less than children's height by one, so no gaps in height is allowed in blockchain. 
+Gagarin.network blockchain is in many ways similar to the blockchains in popular open networks such as Ethereum and Bitcoin. Blockchain is a sequence of blocks starting from special genesis block, every block has link to parent block and genesis block is reachable from every block through its parent recursively. Moreover every block has height such as height of parent block is less than children's height by one, so no gaps in height is allowed in  the blockchain. 
 
 ```proto
 message BlockS {
