@@ -54,7 +54,7 @@ If chunk is incorrect, we add ban score and retry request to other peers
 4. We can receive chunk without head on height m, it is normal, since previous responser could not have this exact fork. In this case we start requesting block headers of potential fork sequentially, until we find parent in current blockchain or hit depthLimit.
 
 5. If we received correct chunk and we are able to add it to existing chain and new chain is correct, we start to download block bodies in parallel.
-It is possible not to receive arbitrary block. In this case we simply drop chunk till this height and request blocks on next height again repeating 3-4 steps
+It is possible not to receive arbitrary block. In this case we simply drop chunk till this height and request blocks on next height again repeating 3-4 steps.
 For each request we have peer group (f + 1), we send query to first one and expect to receive correct request in time. If we can't, we go to next peer in group. If we asked every peer, we report error.
 
 Request and response messages:
