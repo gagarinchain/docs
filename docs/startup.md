@@ -5,7 +5,8 @@ sidebar_label: Configuration
 ---
 
 ## Node
-We widely use [cobra](https://github.com/spf13/cobra) - a library for creating powerful modern CLI applications
+We widely use [cobra](https://github.com/spf13/cobra) - a library for creating powerful modern CLI applications.
+
 Node expose 2 different ports: 9080 for network communication between peers and 9180 for websocket communication
 ### Commands
 Node can be run in different modes, which can be set with run commands
