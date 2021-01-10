@@ -3,7 +3,7 @@ id: consensus
 title: Hotstuff consensus protocol
 sidebar_label: Hotstuff
 ---
-HotStuff is a leader-based Byzantine fault-tolerant replication protocol for the partially synchronous
+HotStuff is a leader-based Byzantine fault-tolerant replication protocol for the partially synchronous
 model.
 > we will be greatful here
 
