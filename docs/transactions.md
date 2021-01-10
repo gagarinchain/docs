@@ -6,7 +6,7 @@ sidebar_label: Transactions
 ---
 
 Since we built Gagarin.network around stablecoin idea, transactions are the only way to mutate state of the system. Gagarin.network implements state replication machine logic. 
-We have state transition function ```applyTx(pcurrent_state, tx_list)``` that receives current state and list of transactions (usually from block being processed) and returns new system state. If at least one transaction is invalid or not applicable, state transition do not happen and ```tx_list``` is rejected. 
+We have state transition function ```applyTx(pcurrent_state, tx_list)``` that receives current state and list of transactions (usually from block being processed) and returns new system state. If at least one transaction is invalid or not applicable, state transition does not happen and ```tx_list``` is rejected. 
 
 Further common transaction structure
 ```proto
