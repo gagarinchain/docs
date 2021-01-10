@@ -28,7 +28,7 @@ message BlockHeaderS {
 }
 ```
 
-Although the blockchain in Gagarin.network does have some differences. 
+In the same time the blockchain in Gagarin.network does have some differences. 
 
 First, our blockchain has additional link to predecessor block. This link is formed via Quorum Certificate included in every block and is used for fast commits in the blockchain. How QCs are formed and used during commit phase is described in Hotstuff docs. 
 
