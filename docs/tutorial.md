@@ -5,7 +5,7 @@ sidebar_label: Tutorial
 ---
 
 ## Functionality
-To create plugin at first you need to decide what events and data you need to receive from blockchain. Usually we will have some diagram, for example for rollups plugin, which we will develop in the tutorial, we have sequence diagram in [rollups](rollups.md) section.
+To create plugin at first you need to decide what events and data you need to receive from the blockchain. Usually we will have some diagram, for example for rollups plugin, which we will develop in the tutorial, we have sequence diagram in [rollups](rollups.md) section.
 
 ## Interfaces
 Since we analyze requirements we found out interfaces we want to implement
