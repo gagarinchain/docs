@@ -36,7 +36,7 @@ When you want to send a message to another peer, you need two key pieces of info
 There are many cases where we only have the PeerId for the peer we want to contact, and we need a way to discover their network address. Peer routing is the process of discovering peer addresses by leveraging the knowledge of other peers.
 
 In a peer routing system, a peer can either give us the address we need if they have it, or else send our inquiry to another peer who’s more likely to have the answer. As we contact more and more peers, we not only increase our chances of finding the peer we’re looking for, libp2p builds a more complete view of the network in our own routing tables, which enables us to answer routing queries from others.
-Libp2p uses a distributed hash table to iteratively route requests closer to the desired PeerId using the Kademlia routing algorythm.
+Libp2p uses a distributed hash table to iteratively route requests closer to the desired PeerId using the Kademlia routing algorithm.
 
 In Gagarin.network peers do not necessarily take part in consensus, they can only provide networking services, such as peer discovery or transport relay. More about peer configuration see in configuration service.
 
