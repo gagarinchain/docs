@@ -37,7 +37,7 @@ Second, our blockchain does not have rich forking, Gagarin.network tree looks mo
 Third, when block is committed we use aggregated signature, formed during voting for proposal with this block as cryptographic proof of block validity. With this proof we can get rid of all transaction signatures in this block, making block size less and further processing of this block faster.      
 
 ## Block validation 
->We will fill in this section soon
+>We will fill this section soon
 
 
 ## Synchronization algorithm
