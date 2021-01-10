@@ -1,12 +1,12 @@
----
+ ---
 id: oracles
 title: Oracles
 sidebar_label: Oracles
 
 ---
 
-Blockchains can't query data from external world and by design are closed systems. To allow blockchains communicate with others oracles are introduced for.
-In Gagarin.network oracles are the built-in mechanism used to provide external facts into blockchain. Since we build Gagarin.Network around stablecoin idea we use oracle to confirm money transfer or locks from external financial systems and blockchains to our network. Let's look closer how they work
+Blockchains can't query data from external world and by design are closed systems. In order to allow blockchains tocommunicate with others oracles are introduced.
+In Gagarin.network oracles are the built-in mechanism used to provide external facts into blockchain. Since we build Gagarin.Network around stablecoin idea we use oracles to confirm money transfer or locks from external financial systems and blockchains to our network. Let's look closer how they work
 
 ![alt-text](assets/oracle.png)
 
