@@ -7,6 +7,6 @@
     "What's next": ["future"]
   },
   "api": {
-    "API": ["api", "buss"]
+    "API": ["api_desc", "api"]
   }
 }
