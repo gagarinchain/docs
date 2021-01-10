@@ -6,7 +6,7 @@ sidebar_label: Hotstuff
 HotStuff is a leader-based Byzantine fault-tolerant replication protocol for the partially synchronous
 model.
 
-We are sincerely grateful to scienties and researchers Maofan Yin, Dahlia Malkhi, Michael K.Reiter, Guy Golan Gueta and Ittai Abraham who designed HotStuff protocol. Without their achievements our project would not be possible.
+We are sincerely grateful to scienties and researchers Maofan Yin, Dahlia Malkhi, Michael K.Reiter, Guy Golan Gueta and Ittai Abraham who designed [HotStuff protocol](https://arxiv.org/pdf/1803.05069.pdf). Without their achievements our project would not be possible. We implemented Hotstuff very close to the original protocol therefore discription below refers to its designers.
 
 ## Basic Hotstuff
 HotStuff solves the State Machine Replication (SMR) problem. At the core of SMR is a protocol for deciding on a
@@ -15,7 +15,7 @@ consistently. A client sends a block proposal request to all replicas, and waits
 
 The Basic HotStuff solution is presented in Algorithm 2. The protocol works in a succession of views numbered
 with monotonically increasing view numbers. Each viewNumber has a unique dedicated leader known to all. Each
-replica stores a tree of pending transactions as its local tx_pool. Each tree node contains a block. Current blockchain is the branch led by a given node is
+replica stores a tree of pending transactions as its local tx_pool. Each tree node contains a block, metadata associated with the protocol, and a parent link. The branch led by a given node is
 the path from the node all the way to the tree root by visiting parent links. During the protocol, a monotonically
 growing branch becomes committed. To become committed, the leader of a particular view proposing the branch
 must collect votes from a quorum of (n − f) replicas in three phases, prepare, pre-commit, and commit.
@@ -64,7 +64,7 @@ consensus decision.
 
 ### Decide phase 
 When the leader receives (n − f) commit votes, it combines them into a commitQC . Once
-the leader has assembled a commitQC , it sends it in a decide message to all other replicas. Upon receiving a
+the leader has assembled a commitQC, it sends it in a decide message to all other replicas. Upon receiving a
 decide message, a replica considers the proposal embodied in the commitQC a committed decision, and executes
 the commands in the committed branch. The replica increments viewNumber and starts the next view.
 
@@ -104,7 +104,7 @@ HotStuff.
 
 ### Empty blocks 
 The genericQC used by a leader in some view viewNumber may not directly reference the proposal of the preceding view (viewNumber −1). The reason is that the leader of a preceding view fails to obtain a QC, either because there are conflicting proposals, or due to a benign crash. To simplify the tree structure, createLeaf
-extends genericQC.block with empty blocks up to the height (the number of parent links on a boock’s branch) of the
+extends genericQC.block with empty blocks up to the height (the number of parent links on a block’s branch) of the
 proposing view, so view-numbers are equated with block heights. As a result, the QC embedded in a block b may not
 refer to its parent, i.e., b.justify.block may not equal b.parent (the last block in chained.png).
 
