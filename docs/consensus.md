@@ -3,9 +3,10 @@ id: consensus
 title: Hotstuff consensus protocol
 sidebar_label: Hotstuff
 ---
-HotStuff is a leader-based Byzantine fault-tolerant replication protocol for the partially synchronous
+HotStuff is a leader-based Byzantine fault-tolerant replication protocol for the partially synchronous
 model.
-> we will be greatful here
+
+We are sincerely grateful to scienties and researchers Maofan Yin, Dahlia Malkhi, Michael K.Reiter, Guy Golan Gueta and Ittai Abraham who designed HotStuff protocol. Without their achievements our project would not be possible.
 
 ## Basic Hotstuff
 HotStuff solves the State Machine Replication (SMR) problem. At the core of SMR is a protocol for deciding on a
