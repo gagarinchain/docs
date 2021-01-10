@@ -5,6 +5,7 @@ sidebar_label: Hotstuff
 ---
 HotStuff is a leader-based Byzantine fault-tolerant replication protocol for the partially synchronous
 model.
+
 We are sincerely grateful to scienties and researchers Maofan Yin, Dahlia Malkhi, Michael K.Reiter, Guy Golan Gueta and Ittai Abraham who designed HotStuff protocol. Without their achievements our project would not be possible.
 
 ## Basic Hotstuff
