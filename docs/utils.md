@@ -67,8 +67,14 @@ Types have aliases
       to: 1
       value: 10
 ```
+In this scenario, on 15-th view tx_send will send:
+- 4 transactions to proposer
+- 1 transaction to first peer
+- 2 transactions to third peer
 
-Settlement can look like this
+Then on 16-th view it will sen 1 transaction to proposer and will exit successfully.
+
+`Agreement` can look like this
 ```yaml
 10:
   p:
@@ -78,6 +84,7 @@ Settlement can look like this
       to: 0x3db5e6f31B6b46ffeC25E512763FC61aEc42654c
       value: 0
 ```
+
 
 ### senders.yaml
 This config defines list of private keys of senders, for example:
