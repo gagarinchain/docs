@@ -19,7 +19,7 @@ libp2p supports “upgrading” a connection provided by a transport into a secu
 
 All communication in Gagarin.network is done via libp2p transport. We use several transport protocols provided by libp2p
  - secio over tcp/ip transport for p2p communication and message broadcasting
- - web socket transport over tcp/ip for monitoring buss service
+ - web socket transport over tcp/ip for monitoring bus service
  - relay transport for advanced network setups 
 
 ## Identity

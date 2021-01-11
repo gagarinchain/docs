@@ -23,7 +23,7 @@ Despite of levelDB's it is pretty good for local data persistent, main limitatio
 - Only a single process (possibly multi-threaded) can access a particular database at a time.
 - There is no client-server support built in to the library. An application that needs such support will have to wrap its own server around the library.
 
-Data stored in storage is not usable for BI and heavy data analytics, you should use monitoring buss for data streaming instead or load levelDB files manually offline. 
+Data stored in storage is not usable for BI and heavy data analytics, you should use monitoring bus for data streaming instead or load levelDB files manually offline. 
 
 LevelDB do not support RDBMS-like table objects, instead we divide data by key prefixes, here is the list
 ```golang
