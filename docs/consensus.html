@@ -147,49 +147,95 @@ refer to its parent, i.e., b.justify.block may not equal b.parent (the last bloc
 <p>If b∗ forms a Two-Chain, then the pre-commit phase of b' has succeeded. The replica should therefore update lockedQC ← b&quot;.justify. Again, we remark that the lock can be updated even when a Two-Chain is not direct—safety will not break—and indeed, this is given in the implementation code in Section 6.</p>
 <p>Finally, if b∗ forms a Three-Chain, the commit phase of b has succeeded, and b becomes a committed decision.</p>
 <h2><a class="anchor" aria-hidden="true" id="pacer"></a><a href="#pacer" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Pacer</h2>
-<p>Pacer is a mechanism that guarantees progress after GST.</p>
-<p>At first, pacer makes progress happen every view, bringing all correct replicas, and a unique leader, into a common height for a
+<p>Pacer is a mechanism that guarantees progress after GST.
+At first, pacer makes progress happen every view change, bringing all correct replicas, and a chosen leader, into a common height for a
 sufficiently long period. For this purpose ∆ max time is spent at every height waiting for appropriate action to be made.
-After progress has been made or ∆ max time is out the network changes view and chooses next proposer (leader). We use round-robin for proposer to switch. All correct replicas store a predefined committee list and rotate to the next one when the leader is demoted. For advanced setups it is possible to use VDF (Verifiable Delay Functions) or every other decentralized source of randomness to switch proposers in stochastic way.</p>
-<p>Synchronization is achieved through epoch starting mechanism. Epoch is a consecutive committee.size of views. Starting at first view and every committee.size view the network starts an epoch via message exchange between replicas sending current known epoch number and HQC.
-The main point is to receive (n - f) messages about the current epoch number and enter first view on current epoch to start making progress if optimistic responsiveness is achieved or waiting ∆ seconds. It gives protocol a timeline which is revisited every epoch.
+After progress has been made or ∆ time is out, the network changes view and chooses next proposer (leader). We use round-robin for proposer to switch. All correct replicas store a predefined committee list and rotate to the next one when the leader is demoted. For advanced setups it is possible to use VDF (Verifiable Delay Functions) or every other decentralized source of randomness to switch proposers in stochastic way.
 This mechanism helps replicas to recover after large network crashes and decide which epoch they were working on last time progress has been achieved.</p>
+<p>At first glance it looks easy to synchronize nodes and keep them at common pace when strong majority (2f + 1) of nodes share the same round, but unfortunately it doesn't.</p>
+<p>Optimistic responsiveness makes this job pretty well, since there is no need to synchronize nodes excessively and they progress with every new proposal. Synchronization become important when optimistic responsiveness breaks and progress is not achieved by it own.</p>
+<p>When network do not achieve progress and all nodes stuck at different rounds the real problems begin. How can network solve it?</p>
+<ol>
+<li>To have some static timetable to stick to</li>
+<li>To have dynamic timetable to stick to</li>
+<li>To have advanced synchronization technique</li>
+</ol>
+<h3><a class="anchor" aria-hidden="true" id="static-timetable"></a><a href="#static-timetable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Static timetable</h3>
+<p>This approach is the most obvious although the slowest one. We can create static timetable the same as synchronous networks have and if node does not receive proposal it starts to wait till appropriate slot and then increases its rounds due to timetable. Although this approach guarantees eventual synchronization it can eliminate all benefits of optimistic responsiveness.</p>
+<h3><a class="anchor" aria-hidden="true" id="dynamic-timetable"></a><a href="#dynamic-timetable" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dynamic timetable</h3>
+<p>This approach is more advanced and is suggested in several papers. Main idea behind it is to allow node decide every synchronization interval length by itself, since nodes were synchronized once it makes sense.</p>
+<p>Assume our network is not synchronized and we have k nodes groups each timed out at separate round and assume that progress is achieved instantly for ease. Assume every group spends ti time on each view waiting for synchronization. Assume we have two groups stuck on a-th and b-th views and a &lt; b for clarity. Than for group stuck on a-th view to reach b-th group we need their time frames to overlap on common view: | Sum(tj) - Sum(ti)| &lt; tk | j=a..k i=b..k, for every two group sums of all time frames spent must be less than last time frame where they meet.</p>
+<p>In common, time to wait ti can be generated by exponential function ti = a + b^i, i should be started at last synchronized round of each group, but in practice to agree on such round is not an easy task at all.
+At first network can choose mechanism to detect such a round explicitly, which is not a good idea in the present of f adversarials. Second, network can make checkpoints every k rounds and start counting gaps from first round after checkpoint. It is exactly the mechanics we implemented preveously. This approach is similar to one introduced in first version and deleted in next versions of Hotstuff paper. The idea is pretty simple and consists in having synchronization sessions every committee full rotation (<code>len(committee)</code> rounds).</p>
+<p>Synchronization is achieved through epoch starting mechanism. Epoch is a consecutive committee.size of views. Starting at first view and every committee.size view the network starts an epoch via message exchange between replicas sending current known epoch number and HQC.
+The main point is to receive (n - f) messages about the current epoch number and enter first view on current epoch to start making progress if optimistic responsiveness is achieved or waiting ∆ seconds. It gives protocol a timeline which is revisited every epoch.</p>
+<p>This mechanics is pretty robust and even help synchronize after GST, but has a huge drawback. Let's consider further attack</p>
+<h4><a class="anchor" aria-hidden="true" id="split-attack"></a><a href="#split-attack" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Split attack</h4>
+<p>In presents of dynamic adversarial they can split network to f groups each in it's own separate round. To achieve this kind of split let k...k+f leaders be adversarials in order and let k=0 for ease. Every new adversarial leader isolates the leader of f + 1 round and propose to the rest of network.
+Adversarials take part in voting and votes for each proposal as if they were honest ones. On round k+f there will be f+1 nodes each on k..k+f round and big group with f honest and f faulty nodes. Big group can't achieve progress now since no consortium can be achieved and f honest nodes times out.<br>
+That's it, new consortium will be achieved in O(e^f) time, and only after that optimistic responsiveness can be achieved again.</p>
+<h3><a class="anchor" aria-hidden="true" id="synchronization-technique"></a><a href="#synchronization-technique" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Synchronization technique</h3>
+<p>We make several adjustments to Hotstuff protocol.</p>
+<ol>
+<li>Progress is made due to QC update <code>QC_received.block.height &gt; HQC</code>, new round r = QC.block.height + 1. Every honest leader must send generated QC in every proposal it sends and if such QC can't be generated honest leader must time out.</li>
+<li>When new QC is not received during 2*∆ interval, node enters synchronization phase and broadcasts Sync message to all nodes.</li>
+<li>When node receives 2*f+1 Sync messages it forms Synchronize Certificate (SC)</li>
+<li>When node receives SC it acts similar to receiving QC and forces round to SC.height+1</li>
+<li>When node do not vote on current round it sends Voting Sync message with appropriate flag, Voting SC (VSC) formed by such Syncs can act as anchor QC for empty block.</li>
+</ol>
+<p>VSC has no Qref block in it, but it can be used in Hotstuff rules as QC that points to any empty block on given height. It helps much in commit rule to achieve commits faster.</p>
 <h2><a class="anchor" aria-hidden="true" id="messages"></a><a href="#messages" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Messages</h2>
-<h3><a class="anchor" aria-hidden="true" id="epoch-start"></a><a href="#epoch-start" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Epoch start</h3>
-<pre><code class="hljs css language-proto"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">EpochStartPayload</span> </span>{
-    <span class="hljs-keyword">oneof</span> body {
-        QuorumCertificate cert = <span class="hljs-number">1</span>;
-        Signature genesisSignature = <span class="hljs-number">2</span>;
-
+<h3><a class="anchor" aria-hidden="true" id="sync"></a><a href="#sync" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sync</h3>
+<pre><code class="hljs css language-proto"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">SynchronizePayload</span> </span>{
+    <span class="hljs-keyword">oneof</span> cert {
+        QuorumCertificate qc = <span class="hljs-number">1</span>;
+        SynchronizeCertificate sc = <span class="hljs-number">2</span>;
     }
     Signature signature = <span class="hljs-number">3</span>;
-    <span class="hljs-built_in">int32</span> epoch_number = <span class="hljs-number">4</span>;
+    Signature votingSignature = <span class="hljs-number">4</span>;
+    <span class="hljs-built_in">int32</span> height = <span class="hljs-number">5</span>;
 }
 </code></pre>
 <p>Message used to agree on epoch number</p>
 <h3><a class="anchor" aria-hidden="true" id="proposal"></a><a href="#proposal" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Proposal</h3>
 <pre><code class="hljs css language-proto"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">ProposalPayload</span> </span>{
-    QuorumCertificate cert = <span class="hljs-number">1</span>;
-    Signature signature = <span class="hljs-number">2</span>;
-    Block block = <span class="hljs-number">3</span>;
-
+    <span class="hljs-keyword">oneof</span> cert {
+        QuorumCertificate qc = <span class="hljs-number">1</span>;
+        SynchronizeCertificate sc = <span class="hljs-number">2</span>;
+    }
+    Signature signature = <span class="hljs-number">3</span>;
+    Block block = <span class="hljs-number">4</span>;
 }
 
 </code></pre>
 <p>Message used to propose block</p>
 <h3><a class="anchor" aria-hidden="true" id="vote"></a><a href="#vote" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Vote</h3>
 <pre><code class="hljs css language-proto"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">VotePayload</span> </span>{
-    QuorumCertificate cert = <span class="hljs-number">1</span>;
-    Signature signature = <span class="hljs-number">2</span>;
-    BlockHeader header = <span class="hljs-number">3</span>;
+    <span class="hljs-keyword">oneof</span> cert {
+        QuorumCertificate qc = <span class="hljs-number">1</span>;
+        SynchronizeCertificate sc = <span class="hljs-number">2</span>;
+    }
+    Signature signature = <span class="hljs-number">3</span>;
+    BlockHeader header = <span class="hljs-number">4</span>;
 }
 </code></pre>
 <p>Message used to vote on proposal</p>
 <h3><a class="anchor" aria-hidden="true" id="quorum-certificate"></a><a href="#quorum-certificate" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Quorum Certificate</h3>
-<pre><code class="hljs css language-proto"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">QuorumCertificate</span> </span>{
-    BlockHeader header = <span class="hljs-number">1</span>;
-    SignatureAggregate signatureAggregate = <span class="hljs-number">2</span>;
+<pre><code class="hljs css language-proto">message QuorumCertificate {
+    CertType    <span class="hljs-keyword">type</span> = <span class="hljs-number">1</span>;
+    BlockHeader header = <span class="hljs-number">2</span>;
+    SignatureAggregate signatureAggregate = <span class="hljs-number">3</span>;
+
+    <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">CertType</span> {</span>
+        QREF   = <span class="hljs-number">0</span>;
+        EMPTY    = <span class="hljs-number">1</span>;
+    }
 }
 </code></pre>
-<p>Message used to aggregate votes in quorum certificate</p>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/architecture"><span class="arrow-prev">← </span><span>Architecture</span></a><a class="docs-next button" href="/docs/blockchain"><span>Blockchain</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#basic-hotstuff">Basic Hotstuff</a></li><li><a href="#phases">Phases</a><ul class="toc-headings"><li><a href="#prepare-phase">Prepare phase</a></li><li><a href="#safenode-predicate">SafeNode predicate</a></li><li><a href="#pre-commit-phase">Pre-commit phase</a></li><li><a href="#commit-phase">Commit phase</a></li><li><a href="#decide-phase">Decide phase</a></li><li><a href="#nextview-interrupt">NextView interrupt</a></li></ul></li><li><a href="#chained-hotstuff">Chained Hotstuff</a><ul class="toc-headings"><li><a href="#empty-blocks">Empty blocks</a></li><li><a href="#one-chain-two-chain-and-three-chain">One-Chain, Two-Chain, and Three-Chain</a></li></ul></li><li><a href="#pacer">Pacer</a></li><li><a href="#messages">Messages</a><ul class="toc-headings"><li><a href="#epoch-start">Epoch start</a></li><li><a href="#proposal">Proposal</a></li><li><a href="#vote">Vote</a></li><li><a href="#quorum-certificate">Quorum Certificate</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/favicon.ico" alt="Gagarin.network" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/overview.html">Docs</a><a href="/docs/api.html">API Reference</a></div><div><h5>More</h5><a href="https://gagarin.network">Site</a><a href="https://github.com/gagarinchain/docs">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2021 Gagarin.Network</section></footer></div></body></html>
+<h3><a class="anchor" aria-hidden="true" id="synchronize-certificate"></a><a href="#synchronize-certificate" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Synchronize Certificate</h3>
+<pre><code class="hljs css language-proto"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">SynchronizeCertificate</span> </span>{
+    <span class="hljs-built_in">int32</span> height = <span class="hljs-number">1</span>;
+    SignatureAggregate signatureAggregate = <span class="hljs-number">3</span>;
+}
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/architecture"><span class="arrow-prev">← </span><span>Architecture</span></a><a class="docs-next button" href="/docs/blockchain"><span>Blockchain</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#basic-hotstuff">Basic Hotstuff</a></li><li><a href="#phases">Phases</a><ul class="toc-headings"><li><a href="#prepare-phase">Prepare phase</a></li><li><a href="#safenode-predicate">SafeNode predicate</a></li><li><a href="#pre-commit-phase">Pre-commit phase</a></li><li><a href="#commit-phase">Commit phase</a></li><li><a href="#decide-phase">Decide phase</a></li><li><a href="#nextview-interrupt">NextView interrupt</a></li></ul></li><li><a href="#chained-hotstuff">Chained Hotstuff</a><ul class="toc-headings"><li><a href="#empty-blocks">Empty blocks</a></li><li><a href="#one-chain-two-chain-and-three-chain">One-Chain, Two-Chain, and Three-Chain</a></li></ul></li><li><a href="#pacer">Pacer</a><ul class="toc-headings"><li><a href="#static-timetable">Static timetable</a></li><li><a href="#dynamic-timetable">Dynamic timetable</a></li><li><a href="#synchronization-technique">Synchronization technique</a></li></ul></li><li><a href="#messages">Messages</a><ul class="toc-headings"><li><a href="#sync">Sync</a></li><li><a href="#proposal">Proposal</a></li><li><a href="#vote">Vote</a></li><li><a href="#quorum-certificate">Quorum Certificate</a></li><li><a href="#synchronize-certificate">Synchronize Certificate</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/favicon.ico" alt="Gagarin.network" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/overview.html">Docs</a><a href="/docs/api.html">API Reference</a></div><div><h5>More</h5><a href="https://gagarin.network">Site</a><a href="https://github.com/gagarinchain/docs">GitHub</a><a class="github-button" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2021 Gagarin.Network</section></footer></div></body></html>
